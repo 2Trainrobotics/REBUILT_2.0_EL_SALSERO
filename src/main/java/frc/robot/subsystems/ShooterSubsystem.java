@@ -1,17 +1,32 @@
+package frc.robot.subsystems;
 
-package frc.robot.constants;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.ShooterConstants;
 
-public class ShooterConstants {
-    // CAN IDs for the Spark Flex shooter motors
-    public static final int kLeftShooterCanId = 9;
-    public static final int kRightShooterCanId = 10;
+public class ShooterSubsystem extends SubsystemBase {
 
-    // Default shooter target RPM
-    public static final double kDefaultShooterRPM = 3000;
+    private final CANSparkMax shooterLeft  = new CANSparkMax(ShooterConstants.kLeftShooterCanId, MotorType.kBrushless);
+    private final CANSparkMax shooterRight = new CANSparkMax(ShooterConstants.kRightShooterCanId, MotorType.kBrushless);
 
-    // PID constants for velocity control (tune as needed)
-    public static final double kP = 0.0005;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kFF = 0.0002; // Feedforward (optional)
+    public ShooterSubsystem() {
+        // Setup motors
+        shooterLeft.setIdleMode(IdleMode.kCoast);
+        shooterRight.setIdleMode(IdleMode.kCoast);
+
+        // Make the right motor follow the left motor
+        shooterRight.follow(shooterLeft, true);
+    }
+
+    /** Set shooter speed from 0.0 to 1.0 */
+    public void setShooter(double speed) {
+        shooterLeft.set(speed);
+    }
+
+    /** Stop the shooter */
+    public void stop() {
+        shooterLeft.set(0);
+    }
 }
