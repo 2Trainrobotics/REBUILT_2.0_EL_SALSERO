@@ -1,1 +1,18 @@
+public class FeederSubsystem extends SubsystemBase {
 
+    private final SparkFlex m_leftFeeder =
+        new SparkFlex(FeederConstants.kLeftFeederID);
+
+    private final SparkFlex m_rightFeeder =
+        new SparkFlex(FeederConstants.kRightFeederID);
+
+    public void runFeeder() {
+        m_leftFeeder.set(FeederConstants.kFeederSpeed);
+        m_rightFeeder.set(FeederConstants.kFeederSpeed);
+    }
+
+    public void stopFeeder() {
+        m_leftFeeder.set(0);
+        m_rightFeeder.set(0);
+    }
+}
