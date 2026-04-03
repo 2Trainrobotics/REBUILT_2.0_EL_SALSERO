@@ -1,9 +1,8 @@
 package frc.robot.constants;
 
-import edu.wpi.first.math.geometry.Translation2d; 
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics; 
-import edu.wpi.first.math.trajectory.TrapezoidProfile; 
-import edu.wpi.first.math.util.Units; 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /*Unlike how MaxSwerve-Java Template has setup DriveConstants, 
  * ModuleConstants, OIConstants, and AutoConstants all in one
@@ -57,15 +56,15 @@ public class DriveConstants {
 
      // SPARK MAX CAN IDs for the drive motors and turning motors of each module
 
-     public static final int kFrontLeftDrivingCanId = 20;
+     public static final int kFrontLeftDrivingCanId = 23;
      public static final int kFrontRightDrivingCanId = 22;  
-     public static final int kRearLeftDrivingCanId = 24; 
-     public static final int kRearRightDrivingCanId = 7;
+     public static final int kRearLeftDrivingCanId = 13;
+     public static final int kRearRightDrivingCanId = 8;
 
-     public static final int kFrontLeftTurningCanId = 21;
-     public static final int kFrontRightTurningCanId = 23; 
-     public static final int kRearLeftTurningCanId = 25;  
-     public static final int kRearRightTurningCanId = 8; 
+     public static final int kFrontLeftTurningCanId = 14;
+     public static final int kFrontRightTurningCanId = 16;
+     public static final int kRearLeftTurningCanId = 25;
+     public static final int kRearRightTurningCanId = 20;
     
      /*  Here's where we reverse the Gyro in case its yaw or heading
      is reading opposite values as we turn it. */
