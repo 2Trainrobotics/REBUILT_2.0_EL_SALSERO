@@ -47,6 +47,10 @@ public class IntakeSubsystem extends SubsystemBase {
      * 4. Determine whether a positive or negative intakeMotor speed value intakes or outtakes
      */
 
+    public void setSwingSpeed(double speed) {
+        m_leftSwingMotor.set(speed);
+    }
+
     public void swingIntakeOut() {
         // TODO:  determine how far is too far for the intake to swing out and implement limit switch or encoder feedback to prevent damage
         // if (m_leftSwingEncoder.getPosition() < SWING_OUT_LIMIT) {

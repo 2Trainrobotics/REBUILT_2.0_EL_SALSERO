@@ -1,15 +1,15 @@
 package frc.robot;
 
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.OIConstants;
-// import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-// import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Robot extends TimedRobot {
@@ -27,17 +27,17 @@ public class Robot extends TimedRobot {
      *   Rear Right:    9 (shooter) SparkFlex
      * 
      * Intake Motors:
-     *   Left Swing:   ? (swing)
-     *   Right Swing:  ? (swing)
-     *   Intake:       ? (intake)
+     *   Left Swing:    4 (swing)
+     *   Right Swing:  11 (swing)
+     *   Intake:       12 (intake)
      * 
      * Feeder Motors:
-     *   Feeder Low:   ? (feeder)
+     *   Feeder Low:        33 (feeder)
      *   Feeder High Left:  21 (feeder)
      *   Feeder High Right:  7 (feeder)
      */
-    // private final DriveSubsystem robotDrive = new DriveSubsystem();
-    // private final IntakeSubsystem robotIntake = new IntakeSubsystem();
+    private final DriveSubsystem robotDrive = new DriveSubsystem();
+    private final IntakeSubsystem robotIntake = new IntakeSubsystem();
     private final ShooterSubsystem robotShooter = new ShooterSubsystem();
     private final FeederSubsystem robotFeeder = new FeederSubsystem();
 
@@ -80,34 +80,76 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         // 1. Drive:  driver controller, left and right joysticks
-        // robotDrive.drive(
-        //     -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriveDeadband),
-        //     -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriveDeadband),
-        //     -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriveDeadband),
-        //     true);
+        robotDrive.drive(
+            -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriveDeadband),
+            true);
 
         if (driverController.getXButton()) {
-            robotShooter.setFrontShooterSpeed(0.5);
-        } else if (driverController.getYButton()) {
-            robotShooter.setFrontShooterSpeed(-0.5);
+            robotShooter.setFrontShooterSpeed(0.1);
+            robotShooter.setRearShooterSpeed(-0.3);
         } else {
             robotShooter.setFrontShooterSpeed(0);
-        }
-
-        if (driverController.getAButton()) {
-            robotShooter.setRearShooterSpeed(0.5);
-        } else if (driverController.getBButton()) {
-            robotShooter.setRearShooterSpeed(-0.5);
-        } else {
             robotShooter.setRearShooterSpeed(0);
         }
 
-        if (driverController.getLeftBumperButton()) {
+        if (driverController.getYButton()) {
             robotFeeder.setHighFeederSpeed(0.5);
-        } else if (driverController.getRightBumperButton()) {
-            robotFeeder.setHighFeederSpeed(-0.5);
         } else {
             robotFeeder.setHighFeederSpeed(0);
+        }
+
+        /////////// Modules below not working; wiring issue?
+
+        /////////// Control Scheme 1
+
+        // if (driverController.getXButton()) {
+        //     robotIntake.setIntakeSpeed(0.5);
+        // } else {
+        //     robotIntake.setIntakeSpeed(0);
+        // }
+
+        // if (driverController.getAButton()) {
+        //     robotFeeder.setLowFeederSpeed(0.5);
+        // } else if (driverController.getBButton()) {
+        //     robotFeeder.setLowFeederSpeed(-0.5);
+        // } else {
+        //     robotFeeder.setLowFeederSpeed(0);
+        // }
+
+        // if (driverController.getStartButton()) {
+        //     robotIntake.setSwingSpeed(0.5);
+        // } else if (driverController.getBackButton()) {
+        //     robotIntake.setSwingSpeed(-0.5);
+        // } else {
+        //     robotIntake.setSwingSpeed(0);
+        // }
+
+        /////////// Control Scheme 2
+
+        if (driverController.getStartButton()) {
+            robotIntake.setIntakeSpeed(0.5);
+        } else if (driverController.getBackButton()) {
+            robotIntake.setIntakeSpeed(-0.5);
+        } else {
+            robotIntake.setIntakeSpeed(0);
+        }
+
+        if (driverController.getLeftTriggerAxis() > 0.2) {
+            robotFeeder.setLowFeederSpeed(0.5);
+        } else if (driverController.getRightTriggerAxis() > 0.2) {
+            robotFeeder.setLowFeederSpeed(-0.5);
+        } else {
+            robotFeeder.setLowFeederSpeed(0);
+        }
+
+        if (driverController.getPOV() >= 315 || driverController.getPOV() <= 45) {
+            robotIntake.setSwingSpeed(0.5);
+        } if (driverController.getPOV() >= 135 || driverController.getPOV() <= 225) {
+            robotIntake.setSwingSpeed(-0.5);
+        } else {
+            robotIntake.setSwingSpeed(0);
         }
 
 
